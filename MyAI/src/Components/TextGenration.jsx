@@ -21,6 +21,7 @@ const TextGeneration = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false); // State to track loading status
+  const [questionHistory, setQuestionHistory] = useState([]); // State to track question history
 
   function handleChange(e) {
     setPrompt(e.target.value);
@@ -32,6 +33,11 @@ const TextGeneration = () => {
     const generatedResponse = await GenerateText(prompt);
     setResponse(generatedResponse);
     setLoading(false); // Set loading to false when text is generated
+    setQuestionHistory((prevHistory) => [
+      ...prevHistory,
+      { question: prompt, response: generatedResponse }
+    ]); // Append new question-response pair to history
+    setPrompt(""); // Clear the input box after submission
   }
 
   return (
@@ -41,23 +47,38 @@ const TextGeneration = () => {
       </h1>
 
       <div className="my-10 mx-auto max-w-screen-lg">
-        <label className="block my-4" htmlFor="Enter your prompt">
-          Enter your prompt
-        </label>
-        <input
-          type="text"
-          onChange={handleChange}
-          className="border w-full  rounded border-black"
-        />
-        <button
-          onClick={handleSubmit}
-          className="block border rounded-r-lg border-black bg-blue-900 text-white px-2 my-4"
-        >
-          {loading ? "Generating..." : "Generate"}
-        </button>
-      </div>
-      <div className="my-4 max-w-screen-xl">
-        <p>{response}</p>
+        {questionHistory.map((item, index) => (
+          <div key={index} className="my-4">
+            <p className="font-bold text-lg mb-2">Question {index + 1}:</p>
+            <p className="text-xl mb-2">{item.question}</p>
+            <p className="font-bold text-lg mb-2">Response:</p>
+            <p className="text-xl mb-2">{item.response}</p>
+          </div>
+        ))}
+        <div className="my-4">
+          <label className="block mb-2" htmlFor="Enter your prompt">
+            Enter your prompt
+          </label>
+          <div className="flex">
+            <input
+              type="text"
+              value={prompt}
+              onChange={handleChange}
+              className="border w-full  rounded border-black"
+            />
+            <button
+              onClick={handleSubmit}
+              className="border rounded-r-lg border-black bg-blue-900 text-white px-2 ml-2"
+            >
+              {loading ? "Generating..." : "Generate"}
+            </button>
+          </div>
+          {loading && (
+            <div className="flex justify-center mt-2">
+              <div className="w-20 h-20 border-4 border-blue-500 rounded-full animate-spin"></div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
