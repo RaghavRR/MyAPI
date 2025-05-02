@@ -4,13 +4,6 @@
 
 ---
 
-## 🌐 Live Demo
-
-🔗 [Try MyAI Live](https://lnkd.in/g-MHyH4Q)  
-📦 [Source Code](https://lnkd.in/gS9WjbHr)
-
----
-
 ## 🧠 What is MyAI?
 
 **MyAI** is a web-based text generation tool powered by AI APIs. It allows users to ask **any type of question** and receive **instant, meaningful responses** — similar to how you'd chat with an intelligent assistant.
